@@ -87,4 +87,36 @@
 	```
 	É através de um cursor que podemos iterar em uma _store_. O `cursor` possui um ponteiro para o primeiro objeto do banco. Veja, é um "ponteiro", não é o dado em si. Através do ponteiro podemos ter acesso ao primeiro, segundo, terceiro objeto e assim por diante. Assim que acessarmos um elemento do ponteiro, precisamos chamar `cursor.continue()` para que o ponteiro avance para o próximo elemento. Quando não houver mais elementos, o retorno de `cursor.continue()` será `null`.
 
+----
+
+### ConnectionFactory
+
+Pensando na manutenção e legibilidade do nosso código, utilizaremos o pattern Factory para organizá-lo, criando assim a classe  `ConnectionFactory`:
+
+```
+ConnectionFactory
+    .getConnection()
+    .then(connection => {
+    });
+
+// faz outras coisas e pede novamente a conexão
+
+ConnectionFactory
+    .getConnection()
+    .then(connection => {
+    });
+```
+Algumas considerações para a classe:
+- A) O método  `getConnection()`  será um método estático, ou seja, invocado diretamente na classe.
+
+- B) O retorno de  `getConnection`  será uma promise, pois a abertura de uma conexão é um processo assíncrono.
+
+- C) Não importa quantas vezes seja chamado o método  `getConnection()`, a conexão retornada deve ser a mesma.
+
+- D) Toda conexão possui o método  `close()`, porém não podemos chamá-lo, porque a conexão é a mesma para a aplicação inteira. Só o próprio  `ConnectionFactory`  pode fechar a conexão.
+
+Quando trabalhamos com o IndexedDB, é comum termos uma única conexão que será usada pela aplicação. Ao criarmos a chamada para o  `getConnection`, ele nos dará a conexão e se fizermos a mesma solicitação novamente, o retorno deverá ser o mesmo. A conexão será compartilhada com toda a aplicação e, por isso, o método  `close()`  não poderá ser chamado novamente. Lembrando que só o  `ConnectionFactory`  terá o poder de fechar a conexão.
+
+Levando em consideração estas regras, faremos o design da classe  `ConnectionFactory`.
+
 > Written with [StackEdit](https://stackedit.io/).
