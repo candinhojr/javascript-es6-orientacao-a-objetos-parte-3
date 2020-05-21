@@ -119,4 +119,12 @@ Quando trabalhamos com o IndexedDB, é comum termos uma única conexão que ser�
 
 Levando em consideração estas regras, faremos o design da classe  `ConnectionFactory`.
 
+> **Utilizando o padrão Module Pattern na classe ConnectionFactory para que sempre que seja chamado o método  `getConnection()`, a conexão retornada seja a mesma**
+	
+ Como a ideia é possuirmos apenas uma conexão para toda a aplicação, a solução foi aplicarmos o _Module Pattern_, com o qual transformamos todo o `script` em um módulo - o código está todo confinado. E depois, definimos qual parte queremos exportar para o mundo externo usando o `return`. A `ConnectionFactory` é acessada, mas todo o restante não. Resolvendo assim o problema de utilizarmos uma única conexão.
+
+> **Utilizamos o Monkey Patch para que somente a `ConnectionFactory` possa fechar a conexão**
+
+Utilizamos o Monkey Path para alterarmos o método `close()` de modo que somente a `ConnectionFactory` possa fechar a conexão.
+
 > Written with [StackEdit](https://stackedit.io/).
