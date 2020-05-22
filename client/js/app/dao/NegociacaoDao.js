@@ -15,10 +15,7 @@ class NegociacaoDao {
                 .objectStore(this._store)
                 .add(negociacao);
 
-            request.onsuccess = e => {
-
-                resolve();
-            };
+            request.onsuccess = e => resolve();
 
             request.onerror = e => {
                 

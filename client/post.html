@@ -38,9 +38,9 @@
 
             //aqui você deve ler os dados do formulário
             let $ = document.querySelector.bind(document);
-            const inputData = $('#data');
-            const inputQuantidade = $('#quantidade');
-            const inputValor = $('#valor');
+            inputData = $('#data');
+            inputQuantidade = $('#quantidade');
+            inputValor = $('#valor');
 
             //construir o json
             let negociacao = {
@@ -51,7 +51,7 @@
 
             //enviar o XMLHttpRequest
             new HTTPService()
-                .post('/negociacoes')
+                .post('/negociacoes', negociacao)
                 .then(() => {
                     inputData.value = '';
                     inputQuantidade.value = 1;

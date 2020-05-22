@@ -58,6 +58,12 @@ class NegociacaoController {
 
         new NegociacaoService()
             .obterNegociacoes()
+            // filtra as negociações de modo a retornar apenas as negociações que ainda não foram inseridas na lista
+            .then(negociacoes => 
+                negociacoes.filter(negociacao => 
+                    !this._listaNegociacoes.negociacoes.some(negociacaoExistente =>
+                        JSON.stringify(negociacao) == JSON.stringify(negociacaoExistente)))
+            )
             .then(negociacoes => {
                 ConnectionFactory
                 .getConnection()
