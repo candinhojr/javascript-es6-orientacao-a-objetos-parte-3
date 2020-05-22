@@ -56,14 +56,21 @@ class NegociacaoController {
 
     importarNegociacoes() {
 
-        let service = new NegociacaoService();
-
-        service
+        new NegociacaoService()
             .obterNegociacoes()
             .then(negociacoes => {
-                negociacoes.forEach(negociacao => 
-                    this._listaNegociacoes.adiciona(negociacao));
-                this._mensagem.texto = 'Negociações da semana importadas com sucesso';    
+                ConnectionFactory
+                .getConnection()
+                .then(connection => {
+                    negociacoes.forEach(negociacao => {
+                        new NegociacaoDao(connection)
+                            .adiciona(negociacao)
+                            .then(() => {
+                                this._listaNegociacoes.adiciona(negociacao);
+                            })
+                    })
+                    this._mensagem.texto = 'Negociações da semana importadas com sucesso';    
+                })
             })
             .catch(erro => this._mensagem.texto = erro);
     }
