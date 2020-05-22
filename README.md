@@ -117,7 +117,30 @@ Algumas considerações para a classe:
 
 Quando trabalhamos com o IndexedDB, é comum termos uma única conexão que será usada pela aplicação. Ao criarmos a chamada para o  `getConnection`, ele nos dará a conexão e se fizermos a mesma solicitação novamente, o retorno deverá ser o mesmo. A conexão será compartilhada com toda a aplicação e, por isso, o método  `close()`  não poderá ser chamado novamente. Lembrando que só o  `ConnectionFactory`  terá o poder de fechar a conexão.
 
-Levando em consideração estas regras, faremos o design da classe  `ConnectionFactory`.
+Levando em consideração estas regras, faremos o design da classe  `ConnectionFactory` com esse primeiro esboço:
+
+```
+class ConnectionFactory {
+
+    constructor() {
+
+        throw new Error("ConnectionFactory não pode ser instanciada");
+    }
+
+    static getConnection() {
+
+        return new Promise((resolve, reject) => {
+
+        });
+    }
+}
+```
+
+> **Lançamos uma exceção no construtor da classe para impedir que sejam criadas intâncias da mesma**
+
+Fizemos isso porque estipulamos que a única maneira de obter a conexão é chamando um método estático da classe `ConnectionFactory`. Aliás, para que um método seja chamado diretamente da classe e não de uma instância, usamos o modificador `static` antes do nome do método.
+
+A obtenção de uma conexão é um processo assíncrono, sendo assim, nada mais justo do que nosso método `getConnection` retornar uma _promise_ para nos ajudar com a complexidade de códigos assíncronos.
 
 > **Utilizando o padrão Module Pattern na classe ConnectionFactory para que sempre que seja chamado o método  `getConnection()`, a conexão retornada seja a mesma**
 	
