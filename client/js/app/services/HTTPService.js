@@ -1,43 +1,16 @@
 class HTTPService {
-    /**
-     * Encapsula a complexidade de se realizar requisições Ajax devolvendo uma promise para determinadas operações.
-     * @method get
-     * @param {*} url 
-     */
+
+    _handleErros(res) {
+
+        if(!res.ok) throw new Error(res.statusText);
+        return res;
+    }
 
     get(url) {
-        return new Promise((resolve, reject) => {
-
-            let xhr = new XMLHttpRequest()
-    
-            xhr.open('GET', url);
-    
-            /**
-             * 0: requisição ainda não iniciada
-             * 1: conexão com o servidor estabelecida
-             * 2: requisição recebida
-             * 3: processando requisição
-             * 4: requisição concluída e a resposta pronta
-             */
-            xhr.onreadystatechange = () => {
-                if (xhr.readyState == 4) {
-                    
-                    if (xhr.status == 200) {
-                        
-                        resolve(JSON.parse(xhr.responseText));
-                        /*
-                            Para entender, xhr.responseText é texto. Assim, eu uso o JSON.parse() para transformar o texto em objetos {no formato JSON}. 
-                        */
-    
-                    } else {
-    
-                        reject(xhr.responseText);
-                    }
-                }
-            };
-    
-            xhr.send();
-        });
+        
+        return fetch(url)
+            .then(res => this._handleErros(res))
+            .then(res => res.json());
     }
 
     post(url, dado) {
