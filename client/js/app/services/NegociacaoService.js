@@ -29,7 +29,6 @@ class NegociacaoService {
         return this._http
             .get('negociacoes/semana')
             .then(negociacoes => {
-                console.log(negociacoes);
                 return negociacoes.map(objeto => new Negociacao(new Date(objeto.data), objeto.quantidade, objeto.valor))
                 // o parse me retorna uma lista de objetos, e para cada objeto dentro dessa lista eu converto esse objeto em uma instância de Negociacao.
             })
@@ -44,7 +43,6 @@ class NegociacaoService {
         return this._http
             .get('negociacoes/anterior')
             .then(negociacoes => {
-                console.log(negociacoes);
                 return negociacoes.map(objeto => new Negociacao(new Date(objeto.data), objeto.quantidade, objeto.valor))
             })
             .catch(erro => {
@@ -58,7 +56,6 @@ class NegociacaoService {
         return this._http
             .get('negociacoes/retrasada')
             .then(negociacoes => {
-                console.log(negociacoes);
                 return negociacoes.map(objeto => new Negociacao(new Date(objeto.data), objeto.quantidade, objeto.valor))
             })
             .catch(erro => {
@@ -72,10 +69,50 @@ class NegociacaoService {
         return ConnectionFactory
             .getConnection()
             .then(connection => new NegociacaoDao(connection))
-            .then(dao.adiciona(negociacao))
+            .then(dao => dao.adiciona(negociacao))
             .then(() => 'Negociação adicionada com sucesso')
-            .catch(() => {
+            .catch(erro => {
+                console.log(erro);
                 throw new Error('Não foi possível adicionar a negociação')
+            })
+    }
+
+    lista() {
+
+        return ConnectionFactory
+            .getConnection()
+            .then(connection => new NegociacaoDao(connection))
+            .then(dao => dao.listaTodos())
+            .catch(erro => {
+                console.log(erro);
+                throw new Error('Não foi possível obter as negociações')
+            })
+    }
+
+    apaga() {
+
+        return ConnectionFactory
+            .getConnection()
+            .then(connection => new NegociacaoDao(connection))
+            .then(dao => dao.apagaTodos())
+            .then(() => 'Negociações apagadas com sucesso')
+            .catch(erro => {
+                console.log(erro);
+                throw new Error('Não foi possível apagar as negociações')
+            })
+    }
+
+    importa(listaAtual) {
+
+        return this.obterNegociacoes()
+            .then(negociacoes => 
+                negociacoes.filter(negociacao => 
+                    !listaAtual.some(negociacaoExistente =>
+                        JSON.stringify(negociacao) == JSON.stringify(negociacaoExistente)))
+            )
+            .catch(erro => {
+                console.log(erro);
+                throw new Error('Não foi possível buscar as negociações para importar')
             })
     }
 }

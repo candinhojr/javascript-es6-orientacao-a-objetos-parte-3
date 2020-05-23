@@ -20,7 +20,7 @@ class ProxyFactory {
                     // Vou substitir a função no proxy por outra
                     return function() {
                         
-                        console.log(`interceptando ${prop}`);
+                        //console.log(`interceptando ${prop}`);
                         // Com o Reflect.apply eu faço a função receber os parâmetros (lista de arguments) dela
                         let retorno = Reflect.apply(target[prop], target, arguments);                        
                         // Atualizo a view
