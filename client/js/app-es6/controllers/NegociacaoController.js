@@ -7,7 +7,7 @@ import { NegociacaoService } from '../services/NegociacaoService';
 import { Bind } from '../helpers/Bind';
 import { DateConverter} from '../helpers/DateConverter';
 
-export class NegociacaoController {
+class NegociacaoController {
     
     constructor() {
 
@@ -115,4 +115,11 @@ export class NegociacaoController {
         }
         this._ordemAtual = coluna;
     }
+}
+
+let negociacaoController = new NegociacaoController();
+
+export function currentInstance() {
+
+    return negociacaoController;
 }
