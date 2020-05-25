@@ -1,4 +1,4 @@
-class HTTPService {
+export class HTTPService {
 
     _handleErros(res) {
 

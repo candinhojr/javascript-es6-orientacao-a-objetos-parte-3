@@ -1,4 +1,7 @@
-class NegociacoesView extends View{
+import { View } from './View';
+import { DateConverter } from '../helpers/DateConverter';
+
+export class NegociacoesView extends View{
 
     //quando os parâmetros recebidos são os mesmos que os da classe pai, podemos ocultar o construtor da classe filha
     constructor(elemento) {

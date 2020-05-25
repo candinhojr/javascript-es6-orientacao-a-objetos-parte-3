@@ -1,4 +1,6 @@
-class MensagemView extends View{
+import { View } from './View';
+
+export class MensagemView extends View{
 
     //quando os parâmetros recebidos são os mesmos que os da classe pai, podemos ocultar o construtor da classe filha
  

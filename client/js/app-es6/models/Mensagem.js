@@ -1,4 +1,4 @@
-class Mensagem {
+export class Mensagem {
 
     //constructor(texto='') { // parâmetro opcional, porém não aceito no EDGE
     constructor(texto) {
